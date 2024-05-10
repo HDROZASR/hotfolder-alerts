@@ -23,7 +23,7 @@ def runQuery(String queryString, String fileName){
     StringBuilder myFiles
 
     queryWeekly = queryString
-    query = new FlexibleSearchQuery(queryWeekly,Map.of('dateNow', dateNow.toString()))
+    query = new FlexibleSearchQuery(queryWeekly)
     searchResult = flexibleSearchService.search(query)
     message = '...Check for missing file list for ' + fileName +'-**.csv... '
     println(message) 
@@ -52,16 +52,16 @@ def runQuery(String queryString, String fileName){
 
 if(dow == Calendar.SATURDAY){
     // This file arrives to Hot-Folder at Saturday plm_parts_extract_hdus_full-*.csv  
-    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'plm_parts_extract_hdus_full%'",'plm_parts_extract_hdus_full')
+    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'plm_parts_extract_hdus_full%'",'plm_parts_extract_hdus_full')
     
     // This file arrives to Hot-Folder at Saturday dealer_inventory_full-**.csv  
-    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'dealer_inventory_full%'",'dealer_inventory_full')
+    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'dealer_inventory_full%'",'dealer_inventory_full')
     
     // This file arrives to Hot-Folder at Saturday fitment_extract_full-**.csv  
-    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'fitment_extract_full%'",'fitment_extract_full')       
+    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'fitment_extract_full%'",'fitment_extract_full')       
 
     // This file arrives to Hot-Folder at Saturday isheet_extract_full-**.csv  
-    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'isheet_extract_full%'",'isheet_extract_full')       
+    runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'isheet_extract_full%'",'isheet_extract_full')       
 }
 
 if(dow == Calendar.MONDAY || dow == Calendar.TUESDAY || dow == Calendar.WEDNESDAY){    
@@ -78,7 +78,7 @@ if(dow == Calendar.MONDAY || dow == Calendar.TUESDAY || dow == Calendar.WEDNESDA
         println(message)
     }
     emailBody.append(message).append(System.lineSeparator())
-    runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'pricing_master_extract%'",'pricing_master_extract')    
+    runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'pricing_master_extract%'",'pricing_master_extract')    
 }
 
 
@@ -91,3 +91,4 @@ email.subject = 'Weekly HotFolder files check'
 email.msg = emailBody.toString()
 // Send the email
 email.send()
+

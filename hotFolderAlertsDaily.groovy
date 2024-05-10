@@ -23,7 +23,7 @@ def runQuery(String queryString, String fileName){
     StringBuilder myFiles
 
     queryWeekly = queryString
-    query = new FlexibleSearchQuery(queryWeekly,Map.of('dateNow', dateNow.toString()))
+    query = new FlexibleSearchQuery(queryWeekly)
     searchResult = flexibleSearchService.search(query)
     message = '...Check for missing file list for ' + fileName +'-**.csv... '
     println(message) 
@@ -74,40 +74,40 @@ def runQuery(String queryString, String fileName){
 emailBody.append(message).append(System.lineSeparator())
 
 // This file arrives to Hot-Folder daily material_extract_hd<**>store-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'material_extract%'",'material_extract')    
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')    
 // This file arrives to Hot-Folder daily dealer_master_extract_hd<**>-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'dealer_master_extract_hd%'",'dealer_master_extract_hd')  
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'dealer_master_extract_hd%'",'dealer_master_extract_hd')  
 // This file arrives to Hot-Folder daily bv_harleydavidson_ratings-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'bv_harleydavidson_ratings%'",'bv_harleydavidson_ratings') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'bv_harleydavidson_ratings%'",'bv_harleydavidson_ratings') 
 // This file arrives to Hot-Folder daily bv_harleydavidson_emea_ratings-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'bv_harleydavidson_emea_ratings%'",'bv_harleydavidson_emea_ratings') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'bv_harleydavidson_emea_ratings%'",'bv_harleydavidson_emea_ratings') 
 // This file arrives to Hot-Folder daily plm_parts_extract_hdus_delta-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'plm_parts_extract%'",'plm_parts_extract') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'plm_parts_extract%'",'plm_parts_extract') 
 // This file arrives to Hot-Folder daily inventory_master_extract-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'inventory_master_extract%'",'inventory_master_extract') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'inventory_master_extract%'",'inventory_master_extract') 
 // This file arrives to Hot-Folder daily dealer_inventory_delta-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'dealer_inventory_delta%'",'dealer_inventory_delta') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'dealer_inventory_delta%'",'dealer_inventory_delta') 
 // This file arrives to Hot-Folder daily dropship_inventory-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'dropship_inventory%'",'dropship_inventory') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'dropship_inventory%'",'dropship_inventory') 
 // This file arrives to Hot-Folder daily fitment_extract_delta-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'fitment_extract_delta%'",'fitment_extract_delta') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'fitment_extract_delta%'",'fitment_extract_delta') 
 // This file arrives to Hot-Folder daily commerce_removed_assets_manifest-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'commerce_removed_assets_manifest%'",'commerce_removed_assets_manifest') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'commerce_removed_assets_manifest%'",'commerce_removed_assets_manifest') 
 // This file arrives to Hot-Folder daily commerce_assets_manifest-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'commerce_assets_manifest%'",'commerce_assets_manifest') 
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'commerce_assets_manifest%'",'commerce_assets_manifest') 
 // This file arrives to Hot-Folder daily isheet_extract_delta-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'isheet_extract_delta%'",'isheet_extract_delta')    
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'isheet_extract_delta%'",'isheet_extract_delta')    
 // This file arrives to Hot-Folder daily order_schedline_extract-**.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'order_schedline_extract%'",'order_schedline_extract')    
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'order_schedline_extract%'",'order_schedline_extract')    
 // This file arrives to Hot-Folder daily material_extract_hd<**>store-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > ?dateNow and {mh.key} like 'material_extract%'",'material_extract')    
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')    
 
 // Create the email
 email = de.hybris.platform.util.mail.MailUtils.getPreConfiguredEmail()
 email.setFrom('AutomaticNotificator@harley-davidson.com')
 email.addTo('SupportHDD1-SUPPHybris@epam.com')
 email.addTo('supporthdd1-epm-sd-l1@harley-davidson.com')
-email.subject = 'Weekly HotFolder files check'
+email.subject = 'Daily HotFolder files check'
 email.msg = emailBody.toString()
 // Send the email
 email.send()
