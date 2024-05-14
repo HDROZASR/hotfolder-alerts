@@ -18,12 +18,13 @@ dow = myDate.get (Calendar.DAY_OF_WEEK)
 def runQuery(String queryString, String fileName){
     String queryWeekly = ''
     FlexibleSearchQuery query
-    SearchResult searchResult
+    SearchResult<List> searchResult
     int lsize
     StringBuilder myFiles
 
     queryWeekly = queryString
     query = new FlexibleSearchQuery(queryWeekly)
+    query.setResultClassList(Arrays.asList(Integer.class, String.class, String.class))
     searchResult = flexibleSearchService.search(query)
     message = '...Check for missing file list for ' + fileName +'-**.csv... '
     println(message) 
@@ -37,10 +38,9 @@ def runQuery(String queryString, String fileName){
     else{  
         myFiles = new StringBuilder()   
         for (item in searchResult.getResult()) {
-            myFiles.append(item.key).append(' ').append(item.code).append(System.lineSeparator()) 
-            println(item.key)
+            myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator())           
         }
-        message = myFiles.toString()
+        message = '...' + myFiles.toString()
         println(message)   
     }
 

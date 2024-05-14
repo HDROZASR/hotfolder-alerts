@@ -18,12 +18,13 @@ dow = myDate.get (Calendar.DAY_OF_WEEK)
 def runQuery(String queryString, String fileName){
     String queryWeekly = ''
     FlexibleSearchQuery query
-    SearchResult searchResult
+    SearchResult<List> searchResult
     int lsize
     StringBuilder myFiles
 
     queryWeekly = queryString
     query = new FlexibleSearchQuery(queryWeekly)
+    query.setResultClassList(Arrays.asList(Integer.class, String.class, String.class))
     searchResult = flexibleSearchService.search(query)
     message = '...Check for missing file list for ' + fileName +'-**.csv... '
     println(message) 
@@ -37,10 +38,9 @@ def runQuery(String queryString, String fileName){
     else{  
         myFiles = new StringBuilder()   
         for (item in searchResult.getResult()) {
-            myFiles.append(item.key).append(' ').append(item.code).append(System.lineSeparator()) 
-            println(item.key)
+            myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator())           
         }
-        message = myFiles.toString()
+        message = '...' + myFiles.toString()
         println(message)   
     }
 
@@ -72,7 +72,6 @@ def runQuery(String queryString, String fileName){
  }
 
 emailBody.append(message).append(System.lineSeparator())
-
 // This file arrives to Hot-Folder daily material_extract_hd<**>store-*.csv
 runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')    
 // This file arrives to Hot-Folder daily dealer_master_extract_hd<**>-*.csv
@@ -100,7 +99,8 @@ runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join Mo
 // This file arrives to Hot-Folder daily order_schedline_extract-**.csv
 runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'order_schedline_extract%'",'order_schedline_extract')    
 // This file arrives to Hot-Folder daily material_extract_hd<**>store-*.csv
-runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')    
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -20, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')   
+
 
 // Create the email
 email = de.hybris.platform.util.mail.MailUtils.getPreConfiguredEmail()
