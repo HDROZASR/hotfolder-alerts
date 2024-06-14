@@ -38,9 +38,9 @@ def runQuery(String queryString, String fileName){
     }
     else{  
         myFiles = new StringBuilder()   
-        for (item in searchResult.getResult()) {
-            myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator())  
+        for (item in searchResult.getResult()) {              
             if(item[2] == 'FAILURE'){
+                myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator())
                 flag = 1
             }         
         }
@@ -71,18 +71,6 @@ if(dow == Calendar.SATURDAY){
     runQuery("select {pk},{mh.key},{ms.code} from { MonitorHistoryData as mh left join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -24, current_timestamp) and {mh.key} like 'isheet_extract_full%'",'isheet_extract_full')       
 }
 
-if(dow == Calendar.MONDAY ||  dow == Calendar.WEDNESDAY){    
-    if(dow == Calendar.MONDAY){
-        message = '...Monday checking for CA file...'
-        println(message)
-    }    
-    if(dow == Calendar.WEDNESDAY){
-        message = '...Wednesday checking for US file...'
-        println(message)
-    }
-    emailBody.append(message).append(System.lineSeparator())
-    runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -24, current_timestamp) and {mh.key} like 'pricing_master_extract%'",'pricing_master_extract')    
-}
 //-24 and 11:59pm
 
 // Create the email

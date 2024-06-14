@@ -39,9 +39,9 @@ def runQuery(String queryString, String fileName){
     }
     else{  
         myFiles = new StringBuilder()   
-        for (item in searchResult.getResult()) {
-            myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator())   
+        for (item in searchResult.getResult()) {              
             if(item[2] == 'FAILURE'){
+                myFiles.append(item[1]).append(' ').append(item[2]).append(System.lineSeparator()) 
                 flag = 1
             }        
         }
@@ -108,6 +108,9 @@ runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join Mo
 runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -24, current_timestamp) and {mh.key} like 'order_schedline_extract%'",'order_schedline_extract')    
 // This file arrives to Hot-Folder daily material_extract_hd<**>store-*.csv
 runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -24, current_timestamp) and {mh.key} like 'material_extract%'",'material_extract')   
+// This file arrives to Hot-Folder daily pricing_master_extract-**.csv
+runQuery("select {PK},{mh.key},{ms.code} from { MonitorHistoryData as mh join MonitorStatus as ms on {mh.status} = {ms.pk} } where {mh.creationTime} > DATEADD(hour, -24, current_timestamp) and {mh.key} like 'pricing_master_extract%'",'pricing_master_extract')
+
 //-24 and run at 7am
 // if 1 of the check for cero files is true, then change subject to or add missing files - something wrong
 
