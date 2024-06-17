@@ -55,7 +55,7 @@ def runQuery(String queryString, String fileName){
     }
     message = '...Check for missing file list for ' + fileName +'-**.csv.. FINISHED ... '
     println(message) 
-    emailBody.append(message).append(System.lineSeparator()).append(System.lineSeparator())  
+    emailBody.append(System.lineSeparator()).append(System.lineSeparator())    
 }
 
  if(dow == Calendar.MONDAY){
