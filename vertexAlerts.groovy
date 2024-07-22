@@ -7,7 +7,7 @@ emailBody = new StringBuilder()
 message = '...Vertex checking STARTED... '
 println(message)
 
-emailBody.append(message).append(System.lineSeparator());
+emailBody.append(message).append(System.lineSeparator())
 dateNow = LocalDateTime.now()
 flag = 0
 
@@ -24,7 +24,7 @@ def runQuery(String queryString, String messageParam){
 
     queryWeekly = queryString
     query = new FlexibleSearchQuery(queryWeekly)
-    query.setResultClassList(Arrays.asList(Integer.class))
+    query.setResultClassList(Arrays.asList(String.class))
     searchResult = flexibleSearchService.search(query)
     message = messageParam + '... STARTED ... '
     println(message) 
@@ -40,7 +40,7 @@ def runQuery(String queryString, String messageParam){
         myPKS = new StringBuilder() 
         myPKS.append('...Checking...FAILED...errors found ' + lsize.toString()).append(System.lineSeparator())          
         for (item in searchResult.getResult()) {              
-          myPKS.append(item.toString()).append(System.lineSeparator())
+          myPKS.append(item).append(System.lineSeparator())
         }
         flag= 1
         message = myPKS.toString() 
